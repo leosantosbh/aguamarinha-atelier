@@ -1,0 +1,154 @@
+.card-carousel {
+  width: 100%;
+
+  overflow: hidden;
+}
+
+.card-carousel__track {
+  width: max-content;
+
+  display: flex;
+
+  gap: 18px;
+
+  padding: 12px 0;
+
+  animation: oracle-scroll 32s linear infinite;
+}
+
+.card-carousel:hover .card-carousel__track {
+  animation-play-state: paused;
+}
+
+.oracle-card {
+  flex: 0 0 205px;
+
+  min-height: 290px;
+
+  padding: 28px 24px;
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: space-between;
+
+  border-radius: 6px;
+
+  box-shadow:
+    0 5px 16px rgba(75, 53, 45, 0.14);
+
+  color: #4d3a33;
+}
+
+.oracle-card p {
+  margin: auto 0;
+
+  font-family: "Cormorant Garamond", Georgia, serif;
+
+  font-size: 19px;
+  line-height: 1.35;
+}
+
+.oracle-card__symbol,
+.oracle-card__footer {
+  text-align: center;
+
+  opacity: 0.55;
+}
+
+.oracle-card--rose {
+  background:
+    linear-gradient(
+      145deg,
+      #d8bec1,
+      #ead8d2,
+      #c9b3bc
+    );
+}
+
+.oracle-card--sand {
+  background:
+    linear-gradient(
+      145deg,
+      #d8c6aa,
+      #eadcc9,
+      #cdbb9f
+    );
+}
+
+.oracle-card--blue {
+  background:
+    linear-gradient(
+      145deg,
+      #afb9c6,
+      #d4d5d1,
+      #aab7c3
+    );
+}
+
+.oracle-card--beige {
+  background:
+    linear-gradient(
+      145deg,
+      #d7cab4,
+      #eee3cf,
+      #c9bca8
+    );
+}
+
+.oracle-card--pink {
+  background:
+    linear-gradient(
+      145deg,
+      #d8bfc0,
+      #ead4d1,
+      #cbb2b7
+    );
+}
+
+@keyframes oracle-scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(
+      calc(-50% - 9px)
+    );
+  }
+}
+
+@media (max-width: 768px) {
+  .card-carousel {
+    overflow-x: auto;
+
+    scrollbar-width: none;
+
+    scroll-snap-type: x mandatory;
+  }
+
+  .card-carousel::-webkit-scrollbar {
+    display: none;
+  }
+
+  .card-carousel__track {
+    animation: none;
+
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .oracle-card {
+    flex-basis: 180px;
+
+    min-height: 255px;
+
+    scroll-snap-align: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card-carousel__track {
+    animation: none;
+  }
+}
