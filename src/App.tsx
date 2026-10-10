@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useState, useEffect, type SyntheticEvent } from "react";
 import { Moon, Sun, X } from "lucide-react";
 import { Header } from "./components/Header/Header";
 import { ImageSlot } from "./components/ImageSlot/ImageSlot";
@@ -11,22 +11,55 @@ import Kit from "./assets/img_6.jpeg";
 import KitCompra from "./assets/img_1.png";
 import "./App.css";
 import { addPayment, type Payment } from "./services/payment";
+import { getDate } from "./services/date";
+import { Notification } from "./components/Notification/Notification";
+
 function App() {
   const [purchaseModalOpen, setPurchaseModalOpen] = useState(false);
+  const [showPreSaleMessage, setShowPreSaleMessage] = useState(false);
+  const [purchaseNotification, setPurchaseNotification] = useState(false);
 
   const handlePurchaseSubmit = (
-    event: FormEvent<HTMLFormElement>
+    event: SyntheticEvent<HTMLFormElement>
   ) => {
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
     const data = Object.fromEntries(formData.entries());
 
-    console.log("Pedido:", data);
     addPayment(data as Partial<Payment>);
 
     setPurchaseModalOpen(false);
+    setPurchaseNotification(true);
   };
+
+  useEffect(() => {
+  const checkPreSaleDate = async () => {
+    try {
+      const response = await getDate();
+
+      const serverTime =
+        response.unixtime * 1000;
+
+      const deadline = new Date(
+        "2026-10-16T00:00:00-03:00"
+      ).getTime();
+
+      setShowPreSaleMessage(
+        serverTime < deadline
+      );
+    } catch (error) {
+      console.error(
+        "Erro ao consultar data:",
+        error
+      );
+
+      setShowPreSaleMessage(false);
+    }
+  };
+
+  checkPreSaleDate();
+}, []);
 
   return (
     <>
@@ -506,30 +539,32 @@ function App() {
                 </label>
               </div>
               {/* RECADO PRÉ-VENDA */}
-              <div className="purchase-form__notice">
-                <Moon
-                  size={25}
-                  strokeWidth={1}
-                />
-                <div>
-                  <h3>
-                    Pausa para um recadinho sobre os mimos da pré-venda
-                  </h3>
-                  <p>
-                    O horário de envio deste formulário registra
-                    automaticamente a sua ordem de chegada!
-                  </p>
-                  <p>
-                    Assim que eu receber o seu pedido, confirmo com você
-                    pelo WhatsApp a sua posição na pré-venda e quais
-                    mimos especiais você garantiu.
-                  </p>
-                  <p>
-                    Em breve te chamo com os detalhes da posição do seu
-                    pedido e os dados para pagamento. Até já!
-                  </p>
+              {showPreSaleMessage && (
+                <div className="purchase-form__notice">
+                  <Moon
+                    size={25}
+                    strokeWidth={1}
+                  />
+                  <div>
+                    <h3>
+                      Pausa para um recadinho sobre os mimos da pré-venda
+                    </h3>
+                    <p>
+                      O horário de envio deste formulário registra
+                      automaticamente a sua ordem de chegada!
+                    </p>
+                    <p>
+                      Assim que eu receber o seu pedido, confirmo com você
+                      pelo WhatsApp a sua posição na pré-venda e quais
+                      mimos especiais você garantiu.
+                    </p>
+                    <p>
+                      Em breve te chamo com os detalhes da posição do seu
+                      pedido e os dados para pagamento. Até já!
+                    </p>
+                  </div>
                 </div>
-              </div>
+              )}
               <div className="purchase-modal__actions">
                 <button
                   type="button"
@@ -549,6 +584,13 @@ function App() {
           </div>
         </div>
       )}
+      <Notification
+        visible={purchaseNotification}
+        duration={5000}
+        title="Pedido recebido!"
+        message="Recebi o seu pedido. Em breve entrarei em contato pelo WhatsApp com os próximos passos."
+        onClose={() => setPurchaseNotification(false)}
+      />
     </>
   );
 }

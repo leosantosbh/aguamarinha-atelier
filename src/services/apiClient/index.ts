@@ -11,3 +11,8 @@ export const api = axios.create({
     "X-Spreadsheet-Id": "1jOrPfUHfvsZJT6m8-7uxq5wFfvKEHrciQl6rA_DXvRE"
   },
 });
+
+
+export const apiDate = axios.create({
+  baseURL: "https://worldtime.timezone.io",
+});
