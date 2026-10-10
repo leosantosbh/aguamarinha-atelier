@@ -8,123 +8,104 @@
   width: max-content;
 
   display: flex;
+  align-items: center;
 
   gap: 18px;
 
-  padding: 12px 0;
+  padding: 14px 0;
 
-  animation: oracle-scroll 32s linear infinite;
+  animation: card-carousel-scroll 45s linear infinite;
 }
 
+/*
+ * Pausa quando o usuário coloca
+ * o mouse sobre as cartas.
+ */
 .card-carousel:hover .card-carousel__track {
   animation-play-state: paused;
 }
 
-.oracle-card {
-  flex: 0 0 205px;
+/* -------------------------------
+   CARTA
+-------------------------------- */
 
-  min-height: 290px;
+.card-carousel__item {
+  flex: 0 0 232px;
 
-  padding: 28px 24px;
+  width: 232px;
 
-  display: flex;
-  flex-direction: column;
+  aspect-ratio: 232 / 290;
 
-  justify-content: space-between;
+  overflow: hidden;
 
-  border-radius: 6px;
+  border-radius: 12px;
+
+  background: #e8dfd6;
 
   box-shadow:
-    0 5px 16px rgba(75, 53, 45, 0.14);
+    0 6px 16px rgba(75, 53, 45, 0.12);
 
-  color: #4d3a33;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
-.oracle-card p {
-  margin: auto 0;
+.card-carousel__item img {
+  display: block;
 
-  font-family: "Cormorant Garamond", Georgia, serif;
+  width: 100%;
+  height: 100%;
 
-  font-size: 19px;
-  line-height: 1.35;
+  object-fit: cover;
+
+  border-radius: inherit;
 }
 
-.oracle-card__symbol,
-.oracle-card__footer {
-  text-align: center;
+/* Pequeno efeito opcional */
 
-  opacity: 0.55;
+.card-carousel__item:hover {
+  transform: translateY(-4px);
+
+  box-shadow:
+    0 10px 24px rgba(75, 53, 45, 0.18);
 }
 
-.oracle-card--rose {
-  background:
-    linear-gradient(
-      145deg,
-      #d8bec1,
-      #ead8d2,
-      #c9b3bc
-    );
-}
+/* -------------------------------
+   MOVIMENTO INFINITO
+-------------------------------- */
 
-.oracle-card--sand {
-  background:
-    linear-gradient(
-      145deg,
-      #d8c6aa,
-      #eadcc9,
-      #cdbb9f
-    );
-}
-
-.oracle-card--blue {
-  background:
-    linear-gradient(
-      145deg,
-      #afb9c6,
-      #d4d5d1,
-      #aab7c3
-    );
-}
-
-.oracle-card--beige {
-  background:
-    linear-gradient(
-      145deg,
-      #d7cab4,
-      #eee3cf,
-      #c9bca8
-    );
-}
-
-.oracle-card--pink {
-  background:
-    linear-gradient(
-      145deg,
-      #d8bfc0,
-      #ead4d1,
-      #cbb2b7
-    );
-}
-
-@keyframes oracle-scroll {
+@keyframes card-carousel-scroll {
   from {
     transform: translateX(0);
   }
 
   to {
+    /*
+     * Como temos duas cópias das mesmas
+     * 10 imagens, movemos exatamente
+     * metade do conjunto.
+     *
+     * 9px = metade do gap de 18px.
+     */
     transform: translateX(
       calc(-50% - 9px)
     );
   }
 }
 
+/* -------------------------------
+   MOBILE
+-------------------------------- */
+
 @media (max-width: 768px) {
   .card-carousel {
     overflow-x: auto;
 
+    scroll-snap-type: x mandatory;
+
     scrollbar-width: none;
 
-    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
   }
 
   .card-carousel::-webkit-scrollbar {
@@ -134,18 +115,39 @@
   .card-carousel__track {
     animation: none;
 
-    padding-left: 20px;
-    padding-right: 20px;
+    gap: 14px;
+
+    padding:
+      12px
+      20px
+      18px;
   }
 
-  .oracle-card {
-    flex-basis: 180px;
+  .card-carousel__item {
+    /*
+     * Mantemos a mesma proporção
+     * 232 x 290, mas reduzimos
+     * um pouco no celular.
+     */
+    flex: 0 0 185px;
 
-    min-height: 255px;
+    width: 185px;
+
+    aspect-ratio: 232 / 290;
+
+    border-radius: 10px;
 
     scroll-snap-align: center;
   }
+
+  .card-carousel__item:hover {
+    transform: none;
+  }
 }
+
+/* -------------------------------
+   ACESSIBILIDADE
+-------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {
   .card-carousel__track {

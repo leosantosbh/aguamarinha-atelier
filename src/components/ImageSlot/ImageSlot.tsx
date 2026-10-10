@@ -5,6 +5,8 @@ interface ImageSlotProps {
   alt?: string;
   label?: string;
   className?: string;
+  style?: React.CSSProperties;
+  styleSlot?: React.CSSProperties;
 }
 
 export function ImageSlot({
@@ -12,11 +14,14 @@ export function ImageSlot({
   alt = "",
   label = "Imagem",
   className = "",
+  style = {},
+  styleSlot = {},
 }: ImageSlotProps) {
   return (
-    <div className={`image-slot ${className}`}>
+    <div style={styleSlot} className={`image-slot ${className}`}>
       {src ? (
         <img
+          style={style}
           src={src}
           alt={alt}
         />

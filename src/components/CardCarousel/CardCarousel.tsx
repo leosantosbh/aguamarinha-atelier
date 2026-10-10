@@ -1,54 +1,80 @@
 import "./CardCarousel.css";
 
+import card01 from "../../assets/Carousel/1.png";
+import card02 from "../../assets/Carousel/2.png";
+import card03 from "../../assets/Carousel/3.png";
+import card04 from "../../assets/Carousel/4.png";
+import card05 from "../../assets/Carousel/5.png";
+import card06 from "../../assets/Carousel/6.png";
+import card07 from "../../assets/Carousel/7.png";
+import card08 from "../../assets/Carousel/8.png";
+import card09 from "../../assets/Carousel/9.png";
+import card10 from "../../assets/Carousel/10.png";
+
 const cards = [
   {
-    text: "Encontrar beleza no cotidiano, e dar pequenos descansos ao seu dia.",
-    tone: "rose",
+    src: card01,
+    alt: "Carta Pequenas Escolhas 01",
   },
   {
-    text: "O que sua intuição já avisou e você ainda escolhe ignorar?",
-    tone: "sand",
+    src: card02,
+    alt: "Carta Pequenas Escolhas 02",
   },
   {
-    text: "Você é protegida e amparada. Confia.",
-    tone: "blue",
+    src: card03,
+    alt: "Carta Pequenas Escolhas 03",
   },
   {
-    text: "Seja leve. Há sutilezas belíssimas acontecendo agora mesmo.",
-    tone: "beige",
+    src: card04,
+    alt: "Carta Pequenas Escolhas 04",
   },
   {
-    text: "O mundo precisa da sua luz. Reconheça o que te nutre.",
-    tone: "pink",
+    src: card05,
+    alt: "Carta Pequenas Escolhas 05",
+  },
+  {
+    src: card06,
+    alt: "Carta Pequenas Escolhas 06",
+  },
+  {
+    src: card07,
+    alt: "Carta Pequenas Escolhas 07",
+  },
+  {
+    src: card08,
+    alt: "Carta Pequenas Escolhas 08",
+  },
+  {
+    src: card09,
+    alt: "Carta Pequenas Escolhas 09",
+  },
+  {
+    src: card10,
+    alt: "Carta Pequenas Escolhas 10",
   },
 ];
 
-const carouselCards = [
-  ...cards,
-  ...cards,
-];
+/*
+ * Duplicamos as cartas para criar o efeito
+ * de carrossel infinito.
+ */
+const carouselCards = [...cards, ...cards];
 
 export function CardCarousel() {
   return (
     <div className="card-carousel">
       <div className="card-carousel__track">
         {carouselCards.map((card, index) => (
-          <article
-            key={`${card.text}-${index}`}
-            className={`oracle-card oracle-card--${card.tone}`}
+          <div
+            className="card-carousel__item"
+            key={`${card.alt}-${index}`}
           >
-            <span className="oracle-card__symbol">
-              ☼
-            </span>
-
-            <p>
-              {card.text}
-            </p>
-
-            <span className="oracle-card__footer">
-              ☾
-            </span>
-          </article>
+            <img
+              src={card.src}
+              alt={card.alt}
+              loading="lazy"
+            />
+          </div>
         ))}
       </div>
     </div>
